@@ -11,11 +11,11 @@ pd.set_option('display.expand_frame_repr', False)
 pd.set_option('display.float_format', lambda x: '%.5f' % x)
 
 ###################################################
-# GÖREV 1: Average Rating'i Güncel Yorumlara Göre Hesaplayınız ve Var Olan Average Rating ile Kıyaslayınız.
+# GÖREV 1: Average Rating'i Güncel Yorumlara Göre Hesaplayalım ve Var Olan Average Rating ile Kıyaslayalım.
 ###################################################
 
 ###################################################
-# Adım 1: Veri Setini Okutunuz ve Ürünün Ortalama Puanını Hesaplayınız.
+# Adım 1: Veri Setini Okutunuz ve Ürünün Ortalama Puanını Hesaplayalım.
 ###################################################
 
 df = pd.read_csv("/Users/rmarabaci/PycharmProjects/pythonProject1/data_science_bootcamp/Hafta_5_Measurement_Problems/datasets/amazon_review.csv")
@@ -23,7 +23,7 @@ df["overall"].mean()
 
 
 ###################################################
-# Adım 2: Tarihe Göre Ağırlıklı Puan Ortalamasını Hesaplayınız.
+# Adım 2: Tarihe Göre Ağırlıklı Puan Ortalamasını Hesaplayalım.
 ###################################################
 
 df['reviewTime'] = pd.to_datetime(df['reviewTime'], dayfirst=True)
@@ -51,10 +51,10 @@ df.loc[(df["day_diff"] > q3), "overall"].mean()
 
 
 ###################################################
-# Görev 2: Ürün için Ürün Detay Sayfasında Görüntülenecek 20 Review'i Belirleyiniz.
+# Görev 2: Ürün için Ürün Detay Sayfasında Görüntülenecek 20 Review'i Belirleyelim.
 ###################################################
 ###################################################
-# Adım 1. helpful_no Değişkenini Üretiniz
+# Adım 1. helpful_no Değişkenini Üretelim
 ###################################################
 
 df["helpful_no"] = df["total_vote"] - df["helpful_yes"]
@@ -62,7 +62,7 @@ df["helpful_no"] = df["total_vote"] - df["helpful_yes"]
 df = df[["reviewerName", "overall", "summary", "helpful_yes", "helpful_no", "total_vote", "reviewTime"]]
 
 ###################################################
-# Adım 2. score_pos_neg_diff, score_average_rating ve wilson_lower_bound Skorlarını Hesaplayıp Veriye Ekleyiniz
+# Adım 2. score_pos_neg_diff, score_average_rating ve wilson_lower_bound Skorlarını Hesaplayıp Veriye Ekleyelim.
 ###################################################
 
 def wilson_lower_bound(up, down, confidence=0.95):
@@ -112,7 +112,7 @@ df["score_average_rating"] = df.apply(lambda x: score_average_rating(x["helpful_
 df["wilson_lower_bound"] = df.apply(lambda x: wilson_lower_bound(x["helpful_yes"], x["helpful_no"]), axis=1)
 
 ##################################################
-# Adım 3. 20 Yorumu Belirleyiniz ve Sonuçları Yorumlayınız.
+# Adım 3. 20 Yorumu Belirleyelim.
 ###################################################
 
 df.sort_values("wilson_lower_bound", ascending=False).head(20)
